@@ -1,0 +1,7 @@
+{
+    "keywords_reply": [{ "key": "key1", "reply": "reply1" }],
+    "per_groups":[],
+    "per_time_info": { "enable": false, "time": 1, "info": "定时消息" },
+    "welcome": { "enable": false, "info": "欢迎欢迎" }
+  }
+  

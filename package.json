@@ -1,0 +1,19 @@
+{
+  "name": "vanbot",
+  "version": "1.1.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@types/inquirer": "^8.2.0",
+    "chalk": "^5.0.0",
+    "figlet": "^1.5.2",
+    "inquirer": "^8.2.0",
+    "oicq": "^2.1.9",
+    "ora": "5.4.1",
+    "yaml": "^1.10.2"
+  },
+  "scripts": {
+    "dev":"tsc && pkg -t win ./release/index.js --out-path ./dev ",
+    "relese":"tsc && pkg -t win ./release/index.js -o vanbot"
+  }
+}
