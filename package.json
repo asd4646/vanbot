@@ -13,6 +13,7 @@
     "yaml": "^1.10.2"
   },
   "scripts": {
+    "code":"tsc",
     "dev":"tsc && pkg -t win ./release/index.js --out-path ./dev ",
     "relese":"tsc && pkg -t win ./release/index.js -o vanbot"
   }

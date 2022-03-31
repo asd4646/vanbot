@@ -1,4 +1,4 @@
-import { Client, createClient, segment } from "oicq";
+import { Client, createClient, GroupInfo, segment } from "oicq";
 import ora from 'ora';
 import inquirer from "inquirer";
 import path from 'path';
@@ -38,7 +38,7 @@ function is_online_befor_login() {
     ]).then(data => {
         if (!isNaN(data.QQ) && data.QQ == data.QQ_) {
             let QQ = data.QQ;
-            app = createClient(QQ, { platform: 4, log_level: 'mark' ,data_dir:path.join(process.cwd(),'data')});
+            app = createClient(QQ, { platform: 4, log_level: 'mark', data_dir: path.join(process.cwd(), 'data') });
             if (app.isOnline()) {
                 console.log('已经登录，跳转至控制台');
                 panel();
@@ -223,9 +223,12 @@ function group_listener() {
     let name_list_already: string[] = [];
     for (let i = 0; i < config.per_groups.length; i++) {
         let num = config.per_groups[i];
-        let name = get_group_list.get(num);
-        if (typeof (name != undefined)) {
-            name_list_already.push(name!.group_name);
+        let name = get_group_list.get(num)
+        try {
+            let push = name!.group_name;
+            name_list_already.push(push);
+        } catch (error) {
+            console.log(error);
         }
     }
     for (let [k, v] of get_group_list) {
@@ -377,7 +380,7 @@ function delete_key(keys: string[]) {
 //入群欢迎设置
 function welcome() {
     console.clear();
-    let status = config.welcome.enable==true ? '\x1B[32m √' : '\x1B[31m ×';
+    let status = config.welcome.enable == true ? '\x1B[32m √' : '\x1B[31m ×';
     console.log('>>>启用状态' + status);
     inquirer.prompt([
         {
@@ -460,7 +463,7 @@ function set_welcome_info() {
 //定时发送设置
 function per_time() {
     console.clear();
-    let status = config.per_time_info.enable==true ? '\x1B[32m √' : '\x1B[31m ×'
+    let status = config.per_time_info.enable == true ? '\x1B[32m √' : '\x1B[31m ×'
     console.log('>>>启用状态' + status);
     inquirer.prompt([
         {
@@ -570,7 +573,7 @@ function set_per_time() {
                         try {
                             app.sendGroupMsg(id, config.per_time_info.info);
                         } catch (error) {
-                            
+
                         }
                     }
                 }
@@ -675,7 +678,7 @@ function QQ_is_online() {
                 let message = [at, config.welcome.info];
                 notice.group.sendMsg(message);
             } catch (error) {
-                
+
             }
         }
     });
@@ -688,12 +691,12 @@ function QQ_is_online() {
         }
     })
     //挤下线处理
-    app.on('system.offline.kickoff',()=>{
+    app.on('system.offline.kickoff', () => {
         console.clear();
         let offline = ora('被挤下线了，即将退出······').start();
-        setTimeout(()=>{
+        setTimeout(() => {
             process.exit();
-        },5000);
+        }, 5000);
     })
 }
 //定时消息
@@ -704,22 +707,22 @@ var per = setInterval(() => {
             try {
                 app.sendGroupMsg(id, config.per_time_info.info);
             } catch (error) {
-                
+
             }
         }
     }
 }, 1000 * config.per_time_info.time);
 
-function the_title(title:string){
-    let log = '----------------------------\n'+`\t${title}`+'\n----------------------------';
+function the_title(title: string) {
+    let log = '----------------------------\n' + `\t${title}` + '\n----------------------------';
     return log;
 }
 
-function the_logo(){
-    let logo ="   __     __            ____        _\n"+
-              "   \\ \\   / /_ _ _ __   | __ )  ___ | |_\n"+
-              "    \\ \\ / / _` | '_ \\  |  _ \\ / _ \\| __|\n"+
-              "     \\ V / (_| | | | | | |_) | (_) | |_\n"+
-              "      \\_/ \\__∧|_| |_| |____/ \\____^__|";
+function the_logo() {
+    let logo = "   __     __            ____        _\n" +
+        "   \\ \\   / /_ _ _ __   | __ )  ___ | |_\n" +
+        "    \\ \\ / / _` | '_ \\  |  _ \\ / _ \\| __|\n" +
+        "     \\ V / (_| | | | | | |_) | (_) | |_\n" +
+        "      \\_/ \\__∧|_| |_| |____/ \\____^__|";
     console.log(logo);
 }
